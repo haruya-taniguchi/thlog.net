@@ -1,0 +1,35 @@
+---
+import PostCard from "../PostCard/PostCard.astro";
+import type { Blog } from "../../lib/microcms";
+
+interface Props {
+	blogs: Blog[];
+}
+
+const { blogs } = Astro.props;
+---
+
+<div class="PostCardList">
+	<div class="PostCardListInner">
+		{blogs.map((blog) => <PostCard blog={blog} />)}
+	</div>
+</div>
+
+<style>
+	.PostCardListInner {
+		--_container-size-max: var(--container-size-lg);
+		--_min-column-width: 320px;
+		--_gap: var(--spacing-3);
+		inline-size: min(
+			100% - var(--spacing-gutter) * 2,
+			var(--_container-size-max)
+		);
+		inline-size: 100%;
+		display: block grid;
+		grid-template-columns: repeat(
+			auto-fit,
+			minmax(var(--_min-column-width), 1fr)
+		);
+		gap: var(--_gap);
+	}
+</style>

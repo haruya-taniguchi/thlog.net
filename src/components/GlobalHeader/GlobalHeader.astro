@@ -1,0 +1,30 @@
+---
+
+---
+
+<header class="globalHeader">
+    <div class="container">
+        <p class="logo"><a href="/"> thlog.net </a></p>
+    </div>
+</header>
+
+<style>
+    .globalHeader {
+        padding: var(--spacing-2) var(--spacing-gutter);
+        inline-size: 100%;
+    }
+    .container {
+        max-inline-size: var(--container-size-lg);
+        margin-inline: auto;
+    }
+    .logo {
+        font-size: var(--font-size-large);
+        font-weight: 600;
+
+        a {
+            border-bottom: var(--is-hover-true, 2px solid var(--bunker))
+                var(--is-hover-false, none);
+        }
+    }
+
+</style>

@@ -9,6 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.11.0"
+    "@astrojs/svelte": "^7.1.0",
+    "astro": "^5.11.0",
+    "kiso.css": "^1.2.1",
+    "microcms-js-sdk": "^3.2.0",
+    "prettier": "^3.6.2",
+    "svelte": "^5.35.6",
+    "typescript": "^5.8.3"
   }
 }

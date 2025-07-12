@@ -1,0 +1,88 @@
+---
+import { Image } from "astro:assets";
+import type { Blog } from "../../lib/microcms";
+import { formatDateJST } from "../../utils/date/formatDateJST";
+
+interface Props {
+    blog: Blog;
+}
+
+const { blog } = Astro.props;
+---
+
+<article class="postCard">
+    <div class="thumbnail">
+        <a href={`/blog/${blog.id}`}>
+            {blog.eyecatch ? (
+                <picture>
+                    <Image
+                        src={`${blog.eyecatch.url}?fm=webp&fit=crop&w=1230&h=630`}
+                        alt={blog.title}
+                        class="eyecatch"
+                        width={blog.eyecatch?.width || 1230}
+                        height={blog.eyecatch?.height || 630}
+                        format="webp"
+                    />
+                </picture>
+            ) : (
+                <div class="placeholderEyecatch"></div>
+            )}
+        </a>
+    </div>
+    <h2 class="title">
+        <a href={`/blog/${blog.id}`}>{blog.title}</a>
+    </h2>
+    <p class="publishDate">{formatDateJST(blog.publishedAt)}</p>
+</article>
+
+<style>
+    .postCard {
+        display: block grid;
+        grid-template-areas:
+            "eyecatch"
+            "title"
+            "publishDate";
+        grid-template-rows: 1fr auto auto;
+    }
+
+    h2 {
+        font-size: var(--font-size-bold);
+        font-weight: 600;
+        a {
+            transition: filter 0.2s var(--ease-out-expo);
+            border-bottom: 2px solid var(--post-card-heading-border-color, rgba(0, 0, 0, 0));
+        }
+    }
+
+    .publishDate {
+        font-size: var(--font-size-small);
+        color: var(--color-gray);
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    a picture img {
+        filter: var(--post-card-eyecatch-filter, brightness(1.0));
+        transition: filter 0.2s var(--ease-out-expo);
+    }
+
+    .placeholderEyecatch {
+        display: block;
+        aspect-ratio: 40 / 21;
+        inline-size: 100%;
+        background-color: var(--alto);
+        transition: filter 0.2s var(--ease-out-expo);
+        filter: var(--post-card-eyecatch-filter, brightness(1.0));
+    }
+
+    @media (any-hover: hover) {
+        .postCard:has(:is(.thumbnail,.title) :any-link:hover) {
+           --post-card-eyecatch-filter: brightness(0.8);
+           --post-card-heading-border-color: var(--bunker);
+        }
+    }
+
+</style>

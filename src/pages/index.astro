@@ -1,16 +1,36 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCardList from "../components/PostCardList/PostCardList.astro";
+import { getBlogs } from "../lib/microcms";
 
+const data = await getBlogs();
+const blogs = data.contents;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="thlog.net">
+	<div class="mainContentInner">
+		<div class="heading">
+			<h1>thlog.net</h1>
+		</div>
+		<PostCardList blogs={blogs} />
+	</div>
+</BaseLayout>
+
+<style>
+	.mainContentInner {
+		inline-size: 100%;
+		display: block grid;
+		gap: var(--spacing-8);
+		grid-template-areas: 
+			"heading"
+			"postCardList";
+		grid-template-rows: auto 1fr;
+		
+		.heading {
+			grid-area: heading;
+		}
+		.postCardList {
+			grid-area: postCardList;
+		}
+	}
+</style>

@@ -1,0 +1,102 @@
+@import "kiso.css";
+
+:root {
+  --bunker: #1b1b1b;
+  --wild-sand: #f4f5f6;
+  --alto: #dde0e4;
+  --scarpa-flow: #525960;
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --spacing-0: 0.25rem;
+  --spacing-1: 0.5rem;
+  --spacing-05: 0.75rem;
+  --spacing-2: 1rem;
+  --spacing-3: 1.5rem;
+  --spacing-4: 2rem;
+  --spacing-5: 2.5rem;
+  --spacing-8: 4rem;
+  --spacing-13: 6.5rem;
+  --spacing-21: 10.5rem;
+  --container-size-md: 820px;
+  --container-size-lg: 1280px;
+  --font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+  --font-size-minimum: 12px;
+  --font-size-small: 14px;
+  --font-size-default: 16px;
+  --font-size-bold: 18px;
+  --font-size-large: 24px;
+  --font-size-h3: 36px;
+  --font-size-h2: 54px;
+  --font-size-h1: 81px;
+  --border-radius-default: 8px;
+  --border-radius-small: 4px;
+
+  --art-board-width-min: 375px;
+  --svi-full: 100svi;
+  --to-svi-min: calc(tan(atan2(var(--svi-full), var(--art-board-width-min)))*1px);
+  --spacing-gutter: calc(20 * var(--to-svi-min));
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family);
+  font-optical-sizing: auto;
+  line-height: 1.5;
+  color: var(--bunker);
+}
+
+header,
+h1,
+h2,
+h3,
+p,
+a,
+
+div,
+ul,
+li,
+figure,
+dl,
+dd,
+button {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-family);
+  appearance: none;
+}
+
+ @media (any-hover: hover) {
+    :where(:any-link, :enabled, summary):hover {
+        --is-hover-true: initial;
+        --is-hover-false: ;
+    }
+}
+
+:where(:any-link, :enabled, summary) {
+    --is-hover-true: ;
+    --is-hover-false: initial;
+}
+
+:where(:any-link, :enabled, summary):focus-visible {
+    --is-hover-true: initial;
+    --is-hover-false: ;
+}
+  
+:where(picture) {
+  display: contents;
+}
