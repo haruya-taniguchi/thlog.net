@@ -3,6 +3,10 @@ import { getBlogDetail, getBlogs } from "../../lib/microcms";
 import { formatDateJST } from "../../utils/date/formatDateJST";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
+import { load } from "cheerio";
+import { codeToHtml, bundledLanguages } from "shiki";
+import { addCopyButton } from "shiki-transformer-copy-button";
+import katex from "katex";
 
 export async function getStaticPaths() {
   const { contents } = await getBlogs();
@@ -14,6 +18,52 @@ export async function getStaticPaths() {
 
 const { id } = Astro.params;
 const blog = await getBlogDetail(id!);
+
+const $ = load(blog.content);
+const promises: any = [];
+
+// TeX数式の処理
+$('code').each((_, elm) => {
+  const codeElement = $(elm);
+  const lang = codeElement.attr('class')?.replace('language-', '');
+  
+  if (lang === 'tex' || lang === 'latex') {
+    const texCode = codeElement.text();
+    try {
+      const rendered = katex.renderToString(texCode, {
+        displayMode: true,
+        throwOnError: false
+      });
+      codeElement.parent('pre').replaceWith(`<div class="katex-display">${rendered}</div>`);
+    } catch (error) {
+      console.warn('KaTeX rendering error:', error);
+    }
+  }
+});
+
+// コードブロックの処理
+$('pre').each((_, elm) => {
+  const codeElement = $(elm).find('code');
+  const lang = codeElement.attr('class')?.replace('language-', '') || 'plaintext';
+  
+  // tex/latexは既に処理済みなのでスキップ
+  if (lang === 'tex' || lang === 'latex') return;
+  
+  const code = codeElement.text();
+  const supportedLang = bundledLanguages[lang] ? lang : 'plaintext'
+  const promise = codeToHtml(code, {
+    lang: supportedLang, 
+    theme: "dark-plus", 
+    transformers: [addCopyButton({ toggle: 3000 })], // コピーボタンを付与
+  }).then((highlighted) => {
+    $(elm).replaceWith(highlighted);
+  });
+  
+  promises.push(promise);
+});
+
+await Promise.all(promises);
+const formatedHtml = $.html();
 ---
 
 <BaseLayout title={blog.title}>
@@ -114,6 +164,18 @@ const blog = await getBlogDetail(id!);
   .content > *:last-child {
     margin-block-end: 0;
   }
+
+  .content .shiki {
+    padding: var(--spacing-3);
+    overflow-x: auto;
+    border-radius: var(--border-radius-small);
+  }
+
+  .content .katex-display{
+    inline-size: 100%;
+    overflow-x: auto;
+  }
+
   .breadcrumb {
     max-inline-size: inherit;
     text-align: center;
