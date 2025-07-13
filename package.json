@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {
@@ -14,7 +15,6 @@
     "@shikijs/transformers": "^3.7.0",
     "astro": "^5.11.0",
     "cheerio": "^1.1.0",
-    "highlight.js": "^11.11.1",
     "katex": "^0.16.22",
     "kiso.css": "^1.2.1",
     "microcms-js-sdk": "^3.2.0",
@@ -23,5 +23,8 @@
     "shiki-transformer-copy-button": "^0.0.5",
     "svelte": "^5.35.6",
     "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.24.3"
   }
 }
