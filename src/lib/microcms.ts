@@ -2,8 +2,8 @@ import type { MicroCMSQueries, MicroCMSListContent, MicroCMSImage } from "microc
 import { createClient } from 'microcms-js-sdk';
 
 export const client = createClient({
-  serviceDomain: "0megzcpqge.microcms.io",
-  apiKey: "64RkOh6sizxMskeH9J1KpvQDwdA6H85jEDOi",
+  serviceDomain: import.meta.env.MICROCMS_SERVICE_DOMAIN,
+  apiKey: import.meta.env.MICROCMS_API_KEY,
 });
 
 export type Blog = {
