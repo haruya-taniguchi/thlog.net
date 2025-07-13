@@ -3,17 +3,17 @@
 ---
 
 <header class="globalHeader">
-    <div class="container">
+    <div class="globalHeaderInner">
         <p class="logo"><a href="/"> thlog.net </a></p>
     </div>
 </header>
 
 <style>
     .globalHeader {
-        padding: var(--spacing-2) var(--spacing-gutter);
-        inline-size: 100%;
+        inline-size: calc(100% - var(--spacing-gutter) * 2);
+        padding-block: var(--spacing-2);
     }
-    .container {
+    .globalHeaderInner {
         max-inline-size: var(--container-size-lg);
         margin-inline: auto;
     }

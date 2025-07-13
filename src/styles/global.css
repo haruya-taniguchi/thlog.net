@@ -51,6 +51,8 @@ body {
   font-optical-sizing: auto;
   line-height: 1.5;
   color: var(--bunker);
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 
 header,
