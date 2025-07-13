@@ -16,11 +16,11 @@ const { blog } = Astro.props;
             {blog.eyecatch ? (
                 <picture>
                     <Image
-                        src={`${blog.eyecatch.url}?fm=webp&fit=crop&w=1230&h=630`}
+                        src={`${blog.eyecatch.url}?fm=webp&fit=fill&fill-color=dde0e4&w=640&h=336`}
                         alt={blog.title}
                         class="eyecatch"
-                        width={blog.eyecatch?.width || 1230}
-                        height={blog.eyecatch?.height || 630}
+                        width={blog.eyecatch?.width || 640}
+                        height={blog.eyecatch?.height || 336}
                         format="webp"
                     />
                 </picture>
