@@ -17,61 +17,72 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params;
-const blog = await getBlogDetail(id!);
+if (!id) {
+  throw new Error('Blog ID is required');
+}
+const blog = await getBlogDetail(id);
 
-const $ = load(blog.content);
-const promises: any = [];
+const $ = load(blog.content || "");
+const promises: Promise<void>[] = [];
 
-// TeX数式の処理
-$('code').each((_, elm) => {
-  const codeElement = $(elm);
-  const lang = codeElement.attr('class')?.replace('language-', '');
-  
-  if (lang === 'tex' || lang === 'latex') {
-    const texCode = codeElement.text();
-    try {
-      const rendered = katex.renderToString(texCode, {
-        displayMode: true,
-        throwOnError: false
-      });
-      codeElement.parent('pre').replaceWith(`<div class="katex-display">${rendered}</div>`);
-    } catch (error) {
-      console.warn('KaTeX rendering error:', error);
-    }
+let htmlContent = $.html();
+
+// MathJAX記法の処理（ディスプレイ数式: $$...$$）
+const displayMathRegex = /\$\$([^$]+)\$\$/g;
+htmlContent = htmlContent.replace(displayMathRegex, (match: string, math: string) => {
+  try {
+    const cleanMath = math.replace(/<br\s*\/?>/gi, '');
+    return katex.renderToString(cleanMath, { displayMode: true });
+  } catch (error) {
+    console.warn('KaTeX display math error:', error);
+    return match;
   }
 });
 
+// MathJAX記法の処理（インライン数式: $...$）
+const inlineMathRegex = /\$([^$\n]+)\$/g;
+htmlContent = htmlContent.replace(inlineMathRegex, (match: string, math: string) => {
+  try {
+    return katex.renderToString(math, { displayMode: false });
+  } catch (error) {
+    console.warn('KaTeX inline math error:', error);
+    return match;
+  }
+});
+
+// 処理済みのHTMLを再度cheerioでロード
+const $preProcessedHtml = load(htmlContent);
+
 // コードブロックの処理
-$('pre').each((_, elm) => {
-  const codeElement = $(elm).find('code');
+$preProcessedHtml('pre').each((_, elm) => {
+  const codeElement = $preProcessedHtml(elm).find('code');
   const lang = codeElement.attr('class')?.replace('language-', '') || 'plaintext';
   
-  // tex/latexは既に処理済みなのでスキップ
   if (lang === 'tex' || lang === 'latex') return;
   
   const code = codeElement.text();
-  const supportedLang = bundledLanguages[lang] ? lang : 'plaintext'
+  const supportedLang = bundledLanguages[lang as keyof typeof bundledLanguages] ? lang : 'plaintext'
   const promise = codeToHtml(code, {
     lang: supportedLang, 
     theme: "dark-plus", 
     transformers: [addCopyButton({ toggle: 3000 })], // コピーボタンを付与
   }).then((highlighted) => {
-    $(elm).replaceWith(highlighted);
+    $preProcessedHtml(elm).replaceWith(highlighted);
   });
   
   promises.push(promise);
 });
 
 await Promise.all(promises);
-const formatedHtml = $.html();
+const formatedHtml = $preProcessedHtml.html();
 ---
 
 <BaseLayout title={blog.title}>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossOrigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous" />
   <div class="mainContentInner">
     <div class="header">
       <h1 class="title">{blog.title}</h1>
-      <p class="date">{formatDateJST(blog.publishedAt)}</p>
+      <p class="date">{formatDateJST(blog.publishedAt || '')}</p>
       {
         blog.eyecatch && (
           <picture class="eyecatch">
