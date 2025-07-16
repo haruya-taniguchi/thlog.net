@@ -186,6 +186,8 @@ const formatedHtml = $preProcessedHtml.html();
   .content .katex-display{
     inline-size: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 0.1rem;/* HACK: なぜかoverflow-xによって数式の上下が見切れてしまうのでpadding追加 */
   }
 
   .breadcrumb {
