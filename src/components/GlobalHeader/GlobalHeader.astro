@@ -1,10 +1,14 @@
 ---
-
+const { isHome = false } = Astro.props;
 ---
 
 <header class="globalHeader">
     <div class="globalHeaderInner">
-        <p class="logo"><a href="/"> thlog.net </a></p>
+        {isHome ? (
+            <h1 class="title"><a href="/"> thlog.net </a></h1>
+        ) : (
+            <p class="logo"><a href="/"> thlog.net </a></p>
+        )}
     </div>
 </header>
 
@@ -17,7 +21,7 @@
         max-inline-size: var(--container-size-lg);
         margin-inline: auto;
     }
-    .logo {
+    .logo, .title {
         font-size: var(--font-size-large);
         font-weight: 600;
 
