@@ -17,6 +17,7 @@
     "cheerio": "^1.1.0",
     "katex": "^0.16.22",
     "kiso.css": "^1.2.1",
+    "mermaid": "11.11.0",
     "microcms-js-sdk": "^3.2.0",
     "prettier": "^3.6.2",
     "shiki": "^3.7.0",
