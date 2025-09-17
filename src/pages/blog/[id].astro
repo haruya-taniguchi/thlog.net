@@ -170,6 +170,103 @@ const formatedHtml = $preProcessedHtml.html();
     margin: 1.8rem 0;
   }
 
+  .content h1+p,.content h2+p,.content h3+p,.content h4+p,.content h5+p,.content h6+p {
+    margin-top: var(--spacing-2);
+}
+
+  .content a {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    color: var(--blue);
+  }
+
+  /* キーボード操作での可視フォーカス時も下線 */
+  .content a:focus-visible {
+    outline: none;
+    border-bottom-color: currentColor;
+  }
+
+  /* ホバー可能なデバイス */
+  @media (any-hover: hover) {
+    .content a:hover {
+      border-bottom-color: currentColor;
+    }
+  }
+
+  /* タッチ主体デバイスのタップ時 */
+  @media (any-hover: none) {
+    .content a:active {
+      border-bottom-color: currentColor;
+    }
+  }
+
+  .content {
+    margin-block-start: 0;
+  }
+
+  .content blockquote {
+    margin: var(--spacing-4) 0;
+    padding: var(--spacing-1) 0 var(--spacing-1) var(--spacing-2);
+    border-inline-start: 4px solid var(--chambray);
+    border-left: 3px solid var(--scarpa-flow);
+    color: var(--scarpa-flow);
+
+    p {
+        margin: var(--spacing-2) 0
+    }
+
+    a {
+      color: var(--blue);
+    }
+
+    >:first-child {
+      margin-block-start: 0;
+    }
+
+    >:last-child {
+      margin-block-end: 0;
+    }
+  }
+  
+
+  .content ul,
+  .content ol {
+    margin: var(--spacing-3) 0;
+    padding-inline-start: 1.8rem;
+  }
+
+  .content ul {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  .content ol {
+    list-style: decimal;
+  }
+
+  .content li {
+    margin-block: 0.6rem;
+    line-height: 1.6;
+  }
+
+  .content ul li {
+    position: relative;
+    padding-inline-start: 1.6rem;
+  }
+
+  .content ul li::before {
+    content: "";
+    --dot-radius: 0.2lh;
+    position: absolute;
+    inset-block-start: 0.5lh;
+    inset-inline-start: 0.8rem;
+    block-size: var(--dot-radius);
+    inline-size: var(--dot-radius);
+    border-radius: 999px;
+    background-color: currentColor;
+    transform: translateY(-50%) translateX(-50%);
+  }
+
   .content img {
     max-inline-size: 100%;
     height: auto;
@@ -190,6 +287,7 @@ const formatedHtml = $preProcessedHtml.html();
     border-radius: var(--border-radius-small);
   }
 
+  .content .mermaid {
     margin-block: var(--spacing-4);
     overflow-x: auto;
   }
@@ -207,7 +305,6 @@ const formatedHtml = $preProcessedHtml.html();
   }
 
   .breadcrumb a {
-    color: var(--bunker);
     text-decoration: none;
     font-size: var(--font-size-default);
     transition: color 0.2s ease;
