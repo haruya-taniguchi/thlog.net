@@ -5,6 +5,7 @@
   --wild-sand: #f4f5f6;
   --alto: #dde0e4;
   --scarpa-flow: #525960;
+  --blue: #0f83fd;
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
@@ -49,6 +50,7 @@ body {
   margin: 0;
   font-family: var(--font-family);
   font-optical-sizing: auto;
+  font-size: var(--font-size-default);
   line-height: 1.5;
   color: var(--bunker);
   text-wrap: pretty;
@@ -82,7 +84,7 @@ button {
   appearance: none;
 }
 
- @media (any-hover: hover) {
+@media (any-hover: hover) {
     :where(:any-link, :enabled, summary):hover {
         --is-hover-true: initial;
         --is-hover-false: ;
