@@ -57,11 +57,17 @@ const $preProcessedHtml = load(htmlContent);
 $preProcessedHtml('pre').each((_, elm) => {
   const codeElement = $preProcessedHtml(elm).find('code');
   const lang = codeElement.attr('class')?.replace('language-', '') || 'plaintext';
-  
-  if (lang === 'tex' || lang === 'latex') return;
-  
   const code = codeElement.text();
-  const supportedLang = bundledLanguages[lang as keyof typeof bundledLanguages] ? lang : 'plaintext'
+
+  if (lang === 'tex' || lang === 'latex') return;
+
+  if (lang === 'mermaid') {
+    const mermaidWrapper = $preProcessedHtml('<div class="mermaid"></div>');
+    mermaidWrapper.text(code);
+    $preProcessedHtml(elm).replaceWith(mermaidWrapper);
+    return;
+  }
+  const supportedLang = bundledLanguages[lang as keyof typeof bundledLanguages] ? lang : 'plaintext';
   const promise = codeToHtml(code, {
     lang: supportedLang, 
     theme: "dark-plus", 
@@ -99,6 +105,7 @@ const formatedHtml = $preProcessedHtml.html();
       }
     </div>
     <div class="content" set:html={formatedHtml} />
+    <script type="module" src="/src/lib/MermaidLoader.client.ts"></script>
     <nav class="breadcrumb">
       <a href="/">← 記事一覧に戻る</a>
     </nav>
@@ -181,6 +188,10 @@ const formatedHtml = $preProcessedHtml.html();
     padding: var(--spacing-3);
     overflow-x: auto;
     border-radius: var(--border-radius-small);
+  }
+
+    margin-block: var(--spacing-4);
+    overflow-x: auto;
   }
 
   .content .katex-display{
