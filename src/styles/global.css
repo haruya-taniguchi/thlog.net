@@ -6,10 +6,16 @@
   --alto: #dde0e4;
   --scarpa-flow: #525960;
   --blue: #0f83fd;
+}
+
+:root {
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
   --spacing-0: 0.25rem;
   --spacing-1: 0.5rem;
   --spacing-05: 0.75rem;
@@ -20,8 +26,14 @@
   --spacing-8: 4rem;
   --spacing-13: 6.5rem;
   --spacing-21: 10.5rem;
+}
+
+:root {
   --container-size-md: 820px;
   --container-size-lg: 1280px;
+}
+
+:root {
   --font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
   --font-size-minimum: 12px;
   --font-size-small: 14px;
@@ -31,9 +43,14 @@
   --font-size-h3: 36px;
   --font-size-h2: 54px;
   --font-size-h1: 81px;
+}
+
+:root {
   --border-radius-default: 8px;
   --border-radius-small: 4px;
+}
 
+:root {
   --art-board-width-min: 375px;
   --svi-full: 100svi;
   --to-svi-min: calc(tan(atan2(var(--svi-full), var(--art-board-width-min)))*1px);
@@ -57,22 +74,21 @@ body {
   word-break: auto-phrase;
 }
 
-header,
-h1,
-h2,
-h3,
-p,
-a,
 
-div,
-ul,
-li,
-figure,
-dl,
-dd,
-button {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+
+:where(h1, h2, h3, p, figure, dl, dd) {
   margin: 0;
+}
+
+:where(ul, ol) {
+  margin: 0;
+  padding: 0;
 }
 
 a {
